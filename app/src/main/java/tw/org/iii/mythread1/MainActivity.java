@@ -8,15 +8,21 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MainActivity extends AppCompatActivity {
     private TextView mesg;
     private UIHandler handler;
     private int i;
+    private Timer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        timer = new Timer();
 
         handler = new UIHandler();
 
@@ -28,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 for (int i=0; i<20; i++){
-                    Log.v("brad", "i = " + i);
+                    Log.v("brad", "test1: i = " + i);
                     //mesg.setText("i = " + i);
                     handler.sendEmptyMessage(i);
                     try {
@@ -85,6 +91,28 @@ public class MainActivity extends AppCompatActivity {
         }.start();
 
 
+    }
+
+    public void test5(View view) {
+        timer.schedule(new Task1(), 0, 1000);
+    }
+
+    private class Task1 extends TimerTask {
+        @Override
+        public void run() {
+            Log.v("brad", "i = " + i++);
+        }
+    }
+
+    @Override
+    public void finish() {
+        if (timer != null){
+            timer.cancel();
+            timer.purge();
+            timer = null;
+        }
+
+        super.finish();
     }
 
     private class UIHandler extends Handler {
