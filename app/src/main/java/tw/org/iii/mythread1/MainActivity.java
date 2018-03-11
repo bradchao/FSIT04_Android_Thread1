@@ -40,6 +40,22 @@ public class MainActivity extends AppCompatActivity {
         }.start();
     }
     public void test2(View view) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i=0; i<10; i++){
+                    mesg.setText("i = " + i);
+                    Log.v("brad", " i = " + i);
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+
     }
     public void test3(View view) {
     }
