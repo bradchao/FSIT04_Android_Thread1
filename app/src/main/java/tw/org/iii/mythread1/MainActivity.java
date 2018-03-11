@@ -11,6 +11,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
     private TextView mesg;
     private UIHandler handler;
+    private int i;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         }.start();
     }
     public void test2(View view) {
+        Log.v("brad", "before");
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -54,11 +56,37 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
+        Log.v("brad", "after");
 
     }
     public void test3(View view) {
+        Log.v("brad", "click");
     }
+
+    public void test4(View view) {
+        new Thread(){
+            @Override
+            public void run() {
+                for (i=0; i<10; i++){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mesg.setText("OK" + i );
+                        }
+                    });
+
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }.start();
+
+
+    }
+
     private class UIHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
